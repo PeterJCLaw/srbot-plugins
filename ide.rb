@@ -24,7 +24,15 @@ class IDEPlugin < Plugin
 	last = f.readlines[-1]
 	f.close()
 
-	last = /D = ([^,]+)/.match(last)[1]
+#	print last, "\n"
+	last = /D = ([^,]+)/.match(last)
+
+	if last == nil
+		return "unknown"
+	end
+
+#	print last, "\n"
+	last = last[1]
 	last = last[0..-8]
 
 	time = Time.parse(last)
