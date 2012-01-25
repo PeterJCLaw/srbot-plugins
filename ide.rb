@@ -9,11 +9,15 @@ class IDEPlugin < Plugin
 
   # reply to a private message that we've registered for
   def privmsg(m)
+	m.reply last_request
+  end
+
+  # Replies with the time of the last request, per the IDE's log.
+  def last_request
 
 	ide_log = '/tmp/ide-log'
 	if not File.readable?(ide_log)
-		m.reply "unknown"
-		return
+		return "unknown"
 	end
 
 	f = File.open(ide_log)
@@ -37,7 +41,7 @@ class IDEPlugin < Plugin
 		message = "#{message}#{diff} second(s) ago"
 	end
 
-	m.reply message
+	return message
 
   end
 end
