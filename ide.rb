@@ -12,7 +12,7 @@ class IDEPlugin < Plugin
 
 	ide_log = '/tmp/ide-log'
 	if not File.readable?(ide_log)
-		m.reply "unknown", "\n"
+		m.reply "unknown"
 		return
 	end
 
