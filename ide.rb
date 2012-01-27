@@ -1,3 +1,6 @@
+
+require 'json'
+require 'net/http'
 require 'time'
 
 class IDEPlugin < Plugin
@@ -9,7 +12,23 @@ class IDEPlugin < Plugin
 
   # reply to a private message that we've registered for
   def privmsg(m)
-	m.reply last_request
+	message = version + "\n" + last_request
+	m.reply message
+  end
+
+  # Replies with the currently live IDE version
+  def version
+	base_url = 'https://www.studentrobotics.org/ide/'
+	url = "#{base_url}control.php/info/about"
+
+	resp = Net::HTTP.get_response(URI.parse(url))
+	data = resp.body
+
+	result = JSON.parse(data)
+	version = result['info']['Version']
+	version = version[0..-7]
+
+	return "At version: #{version}"
   end
 
   # Replies with the time of the last request, per the IDE's log.
