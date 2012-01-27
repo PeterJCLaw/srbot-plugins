@@ -20,24 +20,15 @@ class IDEPlugin < Plugin
 		return "unknown"
 	end
 
-	f = File.open(ide_log)
-	last = f.readlines[-1]
-	f.close()
+	time = File.mtime(ide_log)
 
-#	print last, "\n"
-	last = /D = ([^,]+)/.match(last)
-
-	if last == nil
+	if time == nil
 		return "unknown"
 	end
 
-#	print last, "\n"
-	last = last[1]
-	last = last[0..-8]
-
-	time = Time.parse(last)
-
 	difference = Time.now() - time
+
+	last = time.strftime('%Y-%m-%d %H:%M:%S')
 
 	message = "Last request: #{last}, "
 
