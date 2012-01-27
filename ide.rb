@@ -47,17 +47,18 @@ class IDEPlugin < Plugin
 
 	difference = Time.now() - time
 
-	last = time.strftime('%Y-%m-%d %H:%M:%S')
+	last = time.strftime('%a, %b %d %Y %H:%M:%S')
 
-	message = "Last request: #{last}, "
 
 	if difference > 180
 		diff = Integer(difference / 60)
-		message = "#{message}#{diff} minutes ago"
+		diff = "#{diff} minutes ago on"
 	else
 		diff = Integer(difference)
-		message = "#{message}#{diff} second(s) ago"
+		diff = "#{diff} second(s) ago on"
 	end
+
+	message = "Last request: #{diff} #{last}"
 
 	return message
 
