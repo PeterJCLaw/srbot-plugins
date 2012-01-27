@@ -45,7 +45,7 @@ class IDEPlugin < Plugin
 		diff = Integer(difference / 60)
 		message = "#{message}#{diff} minutes ago"
 	else
-		diff = Integer(difference / 60)
+		diff = Integer(difference)
 		message = "#{message}#{diff} second(s) ago"
 	end
 
