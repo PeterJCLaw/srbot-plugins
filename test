@@ -1,0 +1,22 @@
+#!/usr/bin/env ruby
+
+# A mock of the rbot Plugin base
+class Plugin
+	def map(a)
+	end
+	def register(a)
+	end
+end
+
+class M
+	def reply(thing)
+		print thing, "\n"
+	end
+end
+
+require 'ide.rb'
+
+plugin = IDEPlugin.new
+m = M.new
+
+plugin.privmsg(m)
