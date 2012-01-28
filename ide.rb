@@ -2,7 +2,7 @@
 require 'rubygems'
 
 require 'json'
-require 'net/http'
+require 'net/https'
 require 'time'
 
 class IDEPlugin < Plugin
@@ -22,8 +22,14 @@ class IDEPlugin < Plugin
   def version
 	base_url = 'https://www.studentrobotics.org/ide/'
 	url = "#{base_url}control.php/info/about"
+	uri = URI.parse(url)
 
-	resp = Net::HTTP.get_response(URI.parse(url))
+	http = Net::HTTP.new(uri.host, uri.port)
+	http.use_ssl = true
+	http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+
+	request = Net::HTTP::Get.new(uri.request_uri)
+	resp = http.request(request)
 	data = resp.body
 
 	result = JSON.parse(data)
