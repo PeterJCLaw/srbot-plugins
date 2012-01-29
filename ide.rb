@@ -66,7 +66,7 @@ class IDEPlugin < Plugin
 		diff = "#{diff} second(s) ago on"
 	end
 
-	message = "Last request: #{diff} #{last}"
+	message = "Last error: #{diff} #{last}"
 
 	return message
 
