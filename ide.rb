@@ -55,7 +55,7 @@ class IDEPlugin < Plugin
 
 	difference = Time.now() - time
 
-	last = time.strftime('%a, %b %d %Y %H:%M:%S')
+	last = time.strftime('%a, %d %b %Y %H:%M:%S')
 
 
 	if difference > 180
