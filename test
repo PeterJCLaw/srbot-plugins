@@ -8,15 +8,35 @@ class Plugin
 	end
 end
 
-class M
+class PrivMessage
+	attr_accessor :message
+
 	def reply(thing)
 		print thing, "\n"
 	end
 end
 
 require 'ide.rb'
+require 'trac.rb'
 
-plugin = IDEPlugin.new
-m = M.new
+m = PrivMessage.new
 
-plugin.privmsg(m)
+idePlugin = IDEPlugin.new
+idePlugin.privmsg(m)
+
+tracPlugin = TracPlugin.new
+
+m.message = "nothing here"
+tracPlugin.listen(m)
+
+m.message = "things #123 here"
+tracPlugin.listen(m)
+
+m.message = "trac #456"
+tracPlugin.privmsg(m)
+
+m.message = "trac PageName"
+tracPlugin.privmsg(m)
+
+m.message = "trac Spacey Page Name"
+tracPlugin.privmsg(m)
