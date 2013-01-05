@@ -14,7 +14,7 @@ class IDEPlugin < Plugin
 
   # reply to a private message that we've registered for
   def privmsg(m)
-	message = version + "\n" + last_request
+	message = version
 	m.reply message
   end
 
@@ -37,39 +37,6 @@ class IDEPlugin < Plugin
 	version = version[0..-7]
 
 	return "At version: #{version}"
-  end
-
-  # Replies with the time of the last request, per the IDE's log.
-  def last_request
-
-	ide_log = '/tmp/ide-log'
-	if not File.readable?(ide_log)
-		return "unknown"
-	end
-
-	time = File.mtime(ide_log)
-
-	if time == nil
-		return "unknown"
-	end
-
-	difference = Time.now() - time
-
-	last = time.strftime('%a, %d %b %Y %H:%M:%S')
-
-
-	if difference > 180
-		diff = Integer(difference / 60)
-		diff = "#{diff} minutes ago on"
-	else
-		diff = Integer(difference)
-		diff = "#{diff} second(s) ago on"
-	end
-
-	message = "Last error: #{diff} #{last}"
-
-	return message
-
   end
 end
 
