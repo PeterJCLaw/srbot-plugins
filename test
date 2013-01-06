@@ -16,8 +16,8 @@ class PrivMessage
 	end
 end
 
-require 'ide.rb'
-require 'trac.rb'
+require './ide.rb'
+require './trac.rb'
 
 m = PrivMessage.new
 
