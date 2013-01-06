@@ -8,7 +8,7 @@ class WorthPlugin < Plugin
   # reply to a private message that we've registered for
   def privmsg(m)
 
-    p = `GET http://www.studentrobotics.org/~rbarlow/worth/?simple=abc`
+    p = `GET http://optimusprime.studentrobotics.org/~rbarlow/worth/?simple=abc`
 
     m.reply "SR is worth £#{p}"
   end
