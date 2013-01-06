@@ -8,7 +8,7 @@ class BudgetPlugin < Plugin
   # reply to a private message that we've registered for
   def privmsg(m)
 
-    p = `GET http://optimusprime.studentrobotics.org/~rbarlow/budget/?simple=abc`
+    p = `GET https://optimusprime.studentrobotics.org/~rbarlow/budget/?simple=abc`
 
     m.reply "The budget for SR2012 is £#{p}"
   end

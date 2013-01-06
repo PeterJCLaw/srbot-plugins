@@ -8,7 +8,7 @@ class SpendingPlugin < Plugin
   # reply to a private message that we've registered for
   def privmsg(m)
 
-    p = `GET http://optimusprime.studentrobotics.org/~rbarlow/spending/?simple=abc`
+    p = `GET https://optimusprime.studentrobotics.org/~rbarlow/spending/?simple=abc`
 
     m.reply "So far we've spent #{p}"
   end

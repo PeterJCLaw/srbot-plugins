@@ -8,7 +8,7 @@ class ResponsePlugin < Plugin
   # reply to a private message that we've registered for
   def privmsg(m)
 
-    p = `GET http://optimusprime.studentrobotics.org/~rbarlow/forum_response_time/?simple=abc`
+    p = `GET https://optimusprime.studentrobotics.org/~rbarlow/forum_response_time/?simple=abc`
 
     m.reply "#{p}"
   end
