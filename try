@@ -2,7 +2,7 @@
 
 require './test_mocks.rb'
 
-if VERSION < "1.9.1"
+if RUBY_VERSION < "1.9.1"
   class File
     def self.absolute_path(rel_path)
       dir = File.dirname($0)
