@@ -1,4 +1,6 @@
 ﻿
+require './fetch.rb'
+
 class WorthPlugin < Plugin
 
   # return a help string when the bot is asked for help on this plugin
@@ -9,7 +11,7 @@ class WorthPlugin < Plugin
   # reply to a private message that we've registered for
   def privmsg(m)
 
-    p = `GET https://optimusprime.studentrobotics.org/~rbarlow/worth/?simple=abc`
+    p = optimus_fetch('~rbarlow/worth/?simple=abc')
 
     m.reply "SR is worth £#{p}"
   end
