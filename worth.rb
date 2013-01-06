@@ -1,4 +1,5 @@
-﻿
+# encoding: utf-8
+
 # Hack needed to let the require 'fetch.rb' work outside rbot as well as in.
 $LOAD_PATH << '.'
 
