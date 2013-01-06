@@ -1,8 +1,5 @@
 
-# Hack needed to let the require 'fetch.rb' work outside rbot as well as in.
-$LOAD_PATH << '.'
-
-require './fetch.rb'
+require File.dirname(__FILE__) + '/fetch.rb'
 
 class ResponsePlugin < Plugin
 
