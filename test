@@ -24,6 +24,9 @@ tracPlugin.listen(m)
 m.message = "things not 0147 here"
 tracPlugin.listen(m)
 
+m.message = "things not #0147here either"
+tracPlugin.listen(m)
+
 m.message = "trac #456"
 tracPlugin.privmsg(m)
 
