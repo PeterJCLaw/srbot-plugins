@@ -11,8 +11,8 @@ class TracPlugin < Plugin
 
   # create a link to any ticket numbers present
   def link_ticket(m)
-    if match = /#(\d+)/.match(m.message)
-      match_id = match[1]
+    if match = /(^|\s)#(\d+)/.match(m.message)
+      match_id = match[2]
       m.reply BaseURL + "ticket/" + match_id.to_s
       return true
     end
@@ -41,6 +41,10 @@ class TracPlugin < Plugin
     end
 
     page = m.message[4..-1].strip
+    if /\d+/.match(page)
+      m.reply BaseURL + "ticket/" + page
+      return
+    end
 
     m.reply BaseURL + "wiki/" + URI::encode(page)
   end

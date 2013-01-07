@@ -15,10 +15,19 @@ tracPlugin = TracPlugin.new
 m.message = "nothing here"
 tracPlugin.listen(m)
 
+m.message = "#123"
+tracPlugin.listen(m)
+
 m.message = "things #123 here"
 tracPlugin.listen(m)
 
+m.message = "things not 0147 here"
+tracPlugin.listen(m)
+
 m.message = "trac #456"
+tracPlugin.privmsg(m)
+
+m.message = "trac 258"
 tracPlugin.privmsg(m)
 
 m.message = "trac PageName"
