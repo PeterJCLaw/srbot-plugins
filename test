@@ -3,38 +3,38 @@
 require './test_mocks.rb'
 
 require './ide.rb'
-require './trac.rb'
+require './sr-links.rb'
 
 m = PrivMessage.new
 
 idePlugin = IDEPlugin.new
 idePlugin.privmsg(m)
 
-tracPlugin = TracPlugin.new
+srLinksPlugin = SRLinksPlugin.new
 
 m.message = "nothing here"
-tracPlugin.listen(m)
+srLinksPlugin.listen(m)
 
 m.message = "#123"
-tracPlugin.listen(m)
+srLinksPlugin.listen(m)
 
 m.message = "things #123 here"
-tracPlugin.listen(m)
+srLinksPlugin.listen(m)
 
 m.message = "things not 0147 here"
-tracPlugin.listen(m)
+srLinksPlugin.listen(m)
 
 m.message = "things not #0147here either"
-tracPlugin.listen(m)
+srLinksPlugin.listen(m)
 
 m.message = "trac #456"
-tracPlugin.privmsg(m)
+srLinksPlugin.privmsg(m)
 
 m.message = "trac 258"
-tracPlugin.privmsg(m)
+srLinksPlugin.privmsg(m)
 
 m.message = "trac PageName"
-tracPlugin.privmsg(m)
+srLinksPlugin.privmsg(m)
 
 m.message = "trac Spacey Page Name"
-tracPlugin.privmsg(m)
+srLinksPlugin.privmsg(m)

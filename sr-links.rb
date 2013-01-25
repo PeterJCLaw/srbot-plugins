@@ -1,7 +1,7 @@
 
 require 'open-uri'
 
-class TracPlugin < Plugin
+class SRLinksPlugin < Plugin
   BaseURL = "http://trac.srobo.org/"
 
   # return a help string when the bot is asked for help on this plugin
@@ -50,6 +50,6 @@ class TracPlugin < Plugin
   end
 end
 
-# create an instance of our plugin class and register for the "length" command
-plugin = TracPlugin.new
+# create an instance of our plugin class and register for our commands
+plugin = SRLinksPlugin.new
 plugin.register("trac")
