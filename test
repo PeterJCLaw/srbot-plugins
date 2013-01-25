@@ -5,7 +5,7 @@ require './test_mocks.rb'
 require './ide.rb'
 require './sr-links.rb'
 
-m = PrivMessage.new
+m = PrintingMessage.new
 
 idePlugin = IDEPlugin.new
 idePlugin.privmsg(m)
