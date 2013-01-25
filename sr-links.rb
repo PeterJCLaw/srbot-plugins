@@ -2,7 +2,7 @@
 require 'open-uri'
 
 class SRLinksPlugin < Plugin
-  BaseURL = "http://trac.srobo.org/"
+  TracURL = "http://trac.srobo.org/"
 
   # return a help string when the bot is asked for help on this plugin
   def help(plugin, topic="")
@@ -13,7 +13,7 @@ class SRLinksPlugin < Plugin
   def link_ticket(m)
     if match = /(^|\s)#(\d+)($|\s)/.match(m.message)
       match_id = match[2]
-      m.reply BaseURL + "ticket/" + match_id.to_s
+      m.reply TracURL + "ticket/" + match_id.to_s
       return true
     end
   end
@@ -42,11 +42,11 @@ class SRLinksPlugin < Plugin
 
     page = m.message[4..-1].strip
     if /\d+/.match(page)
-      m.reply BaseURL + "ticket/" + page
+      m.reply TracURL + "ticket/" + page
       return
     end
 
-    m.reply BaseURL + "wiki/" + URI::encode(page)
+    m.reply TracURL + "wiki/" + URI::encode(page)
   end
 end
 
