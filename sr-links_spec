@@ -10,7 +10,7 @@ describe SRLinksPlugin, "#listen" do
   "#123",
   "things #123",
   "#123 here",
-  "things #123 here"
+  "things #123 here",
   ].each do |text|
     it "should find trac number 123 when listening to '#{text}'." do
       msg = TestableMessage.new
@@ -22,10 +22,11 @@ describe SRLinksPlugin, "#listen" do
   end
 
   [
+  "123",
   "things not 123 here",
   "things not #0147here either",
   "things not #here either",
-  "#here"
+  "#here",
   ].each do |text|
     it "shouldn't find a trac number when listening to '#{text}'." do
       msg = TestableMessage.new
@@ -41,7 +42,7 @@ describe SRLinksPlugin, "#listen" do
   "trac #123",
   "trac things #123",
   "trac #123 here",
-  "trac things #123 here"
+  "trac things #123 here",
   ].each do |text|
     it "should find trac number 123 when directly messaged '#{text}'." do
       msg = TestableMessage.new
@@ -54,7 +55,7 @@ describe SRLinksPlugin, "#listen" do
 
   Hash[
   "trac PageName" => "PageName",
-  "trac Spacey Page Name" => "Spacey%20Page%20Name"
+  "trac Spacey Page Name" => "Spacey%20Page%20Name",
   ].each {|text, page|
     it "should link a trac page when directly messaged '#{text}'." do
       msg = TestableMessage.new
