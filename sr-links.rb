@@ -3,10 +3,38 @@ require 'open-uri'
 
 class SRLinksPlugin < Plugin
   TracURL = "http://trac.srobo.org/"
+  GerritURL = "http://gerrit.srobo.org/%s"
+  RepoURL = "http://srobo.org/cgit/%s.git"
+
+  NumRegex = "(\\d+)"
+  # A bit more than ordinary words..
+  WordsRegex = "([\\w/\\-]+)"
+  RepoRegex = WordsRegex + "(.git)?"
+
+  PrefixMapping = Hash[
+    "#" + NumRegex => TracURL + "ticket/%s",
+    "g:" + NumRegex => GerritURL,
+    "gerrit:" + NumRegex => GerritURL,
+    "git:" + RepoRegex => RepoURL,
+    "cgit:" + RepoRegex => RepoURL
+  ]
 
   # return a help string when the bot is asked for help on this plugin
   def help(plugin, topic="")
     return "trac <page|ticket> => return a link to the page or ticket"
+  end
+
+  # create a link based on a pair of options from our hash
+  def link_pair(m, partialRegex, baseURL)
+    #print partialRegex, "\n"
+    fullRegex = /(^|\s)#{partialRegex}($|\s)/
+    #print fullRegex, "\n"
+    if match = fullRegex.match(m.message)
+      #print match
+      match_id = match[2]
+      m.reply baseURL % match_id.to_s
+      return true
+    end
   end
 
   # create a link to any ticket numbers present
@@ -28,9 +56,10 @@ class SRLinksPlugin < Plugin
       return
     end
 
-    if link_ticket(m)
-      return
-    end
+    #print m.message, "\n"
+    PrefixMapping.each {|partialRegex, baseURL|
+      link_pair(m, partialRegex, baseURL)
+    }
 
   end
 
