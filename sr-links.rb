@@ -1,8 +1,13 @@
 
 require 'open-uri'
+require 'openssl'
+
+#disable ssl verification
+OpenSSL::SSL::VERIFY_PEER = OpenSSL::SSL::VERIFY_NONE
 
 class SRLinksPlugin < Plugin
   TracURL = "http://trac.srobo.org/"
+  SafeTracUrl = "https://www.studentrobotics.org/trac/"
   GerritURL = "http://gerrit.srobo.org/%s"
   RepoURL = "http://srobo.org/cgit/%s.git"
 
@@ -31,17 +36,19 @@ class SRLinksPlugin < Plugin
     #print fullRegex, "\n"
     if match = fullRegex.match(m.message)
       #print match
-      match_id = match[2]
-      m.reply baseURL % match_id.to_s
-      return true
+      match_id = match[2].to_s
+      if not (baseURL == TracURL + "ticket/%s") or ticket_exists?(match_id)
+        m.reply baseURL % match_id
+        return true
+      end
     end
   end
 
   # create a link to any ticket numbers present
   def link_ticket(m)
     if match = /(^|\s)#(\d+)($|\s)/.match(m.message)
-      match_id = match[2]
-      m.reply TracURL + "ticket/" + match_id.to_s
+      match_id = match[2].to_s
+      m.reply(ticket_url(match_id)) if ticket_exists?(match_id)
       return true
     end
   end
@@ -76,6 +83,29 @@ class SRLinksPlugin < Plugin
     end
 
     m.reply TracURL + "wiki/" + URI::encode(page)
+  end
+
+  private
+
+  def ticket_exists?(ticket_id)
+    begin
+      io = open(safe_ticket_url(ticket_id))
+      true
+    rescue OpenURI::HTTPError
+      false
+    end
+  end
+
+  def ticket_url(ticket_id)
+    "#{TracURL}#{ticket_suffix(ticket_id)}"
+  end
+
+  def safe_ticket_url(ticket_id)
+    "#{SafeTracUrl}#{ticket_suffix(ticket_id)}"
+  end
+
+  def ticket_suffix(ticket_id)
+    "ticket/#{ticket_id}"
   end
 end
 

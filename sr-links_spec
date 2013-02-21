@@ -27,6 +27,7 @@ describe SRLinksPlugin, "#listen" do
   "things not #0147here either",
   "things not #here either",
   "#here",
+  "#1000000000000",
   ].each do |text|
     it "shouldn't find a trac number when listening to '#{text}'." do
       msg = TestableMessage.new
@@ -139,5 +140,4 @@ describe SRLinksPlugin, "#listen" do
       msg.get_replies.should eq("")
     end
   end
-
 end
