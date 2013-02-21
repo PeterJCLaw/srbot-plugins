@@ -64,9 +64,9 @@ class SRLinksPlugin < Plugin
     end
 
     #print m.message, "\n"
-    PrefixMapping.each {|partialRegex, baseURL|
+    PrefixMapping.each do |partialRegex, baseURL|
       link_pair(m, partialRegex, baseURL)
-    }
+    end
 
   end
 
