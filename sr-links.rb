@@ -16,13 +16,13 @@ class SRLinksPlugin < Plugin
   WordsRegex = "([\\w/\\-]+)"
   RepoRegex = WordsRegex + "(.git)?"
 
-  PrefixMapping = Hash[
+  PrefixMapping = {
     "#" + NumRegex => TracURL + "ticket/%s",
     "g:" + NumRegex => GerritURL,
     "gerrit:" + NumRegex => GerritURL,
     "git:" + RepoRegex => RepoURL,
     "cgit:" + RepoRegex => RepoURL
-  ]
+  }
 
   # return a help string when the bot is asked for help on this plugin
   def help(plugin, topic="")
