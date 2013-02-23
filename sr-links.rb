@@ -16,15 +16,18 @@ class SRLinksPlugin < Plugin
   WordsRegex = "([\\w/\\-]+)"
   RepoRegex = WordsRegex + "(.git)?"
 
-  PrefixMapping = {
-    "#" + NumRegex => TracURL + "ticket/%s",
-    "t:#" + NumRegex => TracURL + "ticket/%s",
-    "t:" + WordsRegex => TracURL + "wiki/%s",
-    "g:" + NumRegex => GerritURL,
-    "gerrit:" + NumRegex => GerritURL,
-    "git:" + RepoRegex => RepoURL,
-    "cgit:" + RepoRegex => RepoURL
-  }
+  def initialize
+    super
+    @PrefixMapping = {
+      "#" + NumRegex => [TracURL + "ticket/%s", method(:ticket_exists?)],
+      "t:#" + NumRegex => [TracURL + "ticket/%s", method(:ticket_exists?)],
+      "t:" + WordsRegex => TracURL + "wiki/%s",
+      "g:" + NumRegex => GerritURL,
+      "gerrit:" + NumRegex => GerritURL,
+      "git:" + RepoRegex => RepoURL,
+      "cgit:" + RepoRegex => RepoURL
+    }
+  end
 
   # return a help string when the bot is asked for help on this plugin
   def help(plugin, topic="")
@@ -32,14 +35,19 @@ class SRLinksPlugin < Plugin
   end
 
   # create a link based on a pair of options from our hash
-  def link_pair(m, partialRegex, baseURL)
+  def link_pair(m, partialRegex, baseURL, verifier)
     #print partialRegex, "\n"
     fullRegex = /(^|\s)#{partialRegex}($|\s)/
     #print fullRegex, "\n"
     if match = fullRegex.match(m.message)
       #print match
       match_id = match[2].to_s
-      if not (baseURL == TracURL + "ticket/%s") or ticket_exists?(match_id)
+      valid = false
+      # Assume that unverified urls are valid
+      if verifier == nil or verifier[match_id]
+        valid = true
+      end
+      if valid
         m.reply baseURL % match_id
         return true
       end
@@ -66,8 +74,15 @@ class SRLinksPlugin < Plugin
     end
 
     #print m.message, "\n"
-    PrefixMapping.each do |partialRegex, baseURL|
-      link_pair(m, partialRegex, baseURL)
+    @PrefixMapping.each do |partialRegex, bits|
+      verifier = nil
+      if bits.is_a?(Array)
+        baseURL = bits[0]
+        verifier = bits[1]
+      else
+        baseURL = bits
+      end
+      link_pair(m, partialRegex, baseURL, verifier)
     end
 
   end
