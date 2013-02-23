@@ -6,18 +6,35 @@ require './sr-links.rb'
 
 describe SRLinksPlugin, "#listen" do
 
+  ["#", "t:#"].each do |prefix|
+    [
+    "#{prefix}123",
+    "things #{prefix}123",
+    "#{prefix}123 here",
+    "things #{prefix}123 here",
+    ].each do |text|
+      it "should find trac number 123 when listening to '#{text}'." do
+        msg = TestableMessage.new
+        msg.message = text
+        plugin = SRLinksPlugin.new
+        plugin.listen(msg)
+        msg.get_replies.should eq("http://trac.srobo.org/ticket/123\n")
+      end
+    end
+  end
+
   [
-  "#123",
-  "things #123",
-  "#123 here",
-  "things #123 here",
+  "t:Competition",
+  "things t:Competition",
+  "t:Competition here",
+  "things t:Competition here",
   ].each do |text|
-    it "should find trac number 123 when listening to '#{text}'." do
+    it "should find trac page Competition when listening to '#{text}'." do
       msg = TestableMessage.new
       msg.message = text
       plugin = SRLinksPlugin.new
       plugin.listen(msg)
-      msg.get_replies.should eq("http://trac.srobo.org/ticket/123\n")
+      msg.get_replies.should eq("http://trac.srobo.org/wiki/Competition\n")
     end
   end
 

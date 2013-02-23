@@ -18,6 +18,8 @@ class SRLinksPlugin < Plugin
 
   PrefixMapping = {
     "#" + NumRegex => TracURL + "ticket/%s",
+    "t:#" + NumRegex => TracURL + "ticket/%s",
+    "t:" + WordsRegex => TracURL + "wiki/%s",
     "g:" + NumRegex => GerritURL,
     "gerrit:" + NumRegex => GerritURL,
     "git:" + RepoRegex => RepoURL,
