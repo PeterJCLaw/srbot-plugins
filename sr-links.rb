@@ -21,7 +21,7 @@ class SRLinksPlugin < Plugin
     @PrefixMapping = {
       "#" + NumRegex => [TracURL + "ticket/%s", method(:ticket_exists?)],
       "t:#" + NumRegex => [TracURL + "ticket/%s", method(:ticket_exists?)],
-      "t:" + WordsRegex => TracURL + "wiki/%s",
+      "t:" + WordsRegex => [TracURL + "wiki/%s", method(:trac_page_exists?)],
       "g:" + NumRegex => GerritURL,
       "gerrit:" + NumRegex => GerritURL,
       "git:" + RepoRegex => RepoURL,
@@ -113,6 +113,15 @@ class SRLinksPlugin < Plugin
     end
   end
 
+  def trac_page_exists?(page_name)
+    begin
+      io = open(safe_trac_page_url(page_name))
+      true
+    rescue OpenURI::HTTPError
+      false
+    end
+  end
+
   def ticket_url(ticket_id)
     "#{TracURL}#{ticket_suffix(ticket_id)}"
   end
@@ -121,8 +130,16 @@ class SRLinksPlugin < Plugin
     "#{SafeTracUrl}#{ticket_suffix(ticket_id)}"
   end
 
+  def safe_trac_page_url(ticket_id)
+    "#{SafeTracUrl}#{trac_page_suffix(ticket_id)}"
+  end
+
   def ticket_suffix(ticket_id)
     "ticket/#{ticket_id}"
+  end
+
+  def trac_page_suffix(page_name)
+    "wiki/#{page_name}"
   end
 end
 

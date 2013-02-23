@@ -39,6 +39,21 @@ describe SRLinksPlugin, "#listen" do
   end
 
   [
+  "t:ThisPageMustNotExist",
+  "things t:ThisPageMustNotExist",
+  "t:ThisPageMustNotExist here",
+  "things t:ThisPageMustNotExist here",
+  ].each do |text|
+    it "should not reply with trac page ThisPageMustNotExist when listening to '#{text}'." do
+      msg = TestableMessage.new
+      msg.message = text
+      plugin = SRLinksPlugin.new
+      plugin.listen(msg)
+      msg.get_replies.should eq("")
+    end
+  end
+
+  [
   "123",
   "things not 123 here",
   "things not #0147here either",
