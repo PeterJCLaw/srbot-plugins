@@ -37,7 +37,7 @@ class SRLinksPlugin < Plugin
   # create a link based on a pair of options from our hash
   def link_pair(m, partialRegex, baseURL, verifier)
     #print partialRegex, "\n"
-    fullRegex = /(^|\s)#{partialRegex}($|\s)/
+    fullRegex = /(^|\s)#{partialRegex}($|[\s,:;\.\?])/
     #print fullRegex, "\n"
     if match = fullRegex.match(m.message)
       #print match

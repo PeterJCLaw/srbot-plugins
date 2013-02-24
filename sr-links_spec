@@ -107,6 +107,10 @@ describe SRLinksPlugin, "#listen" do
     "things #{prefix}123",
     "#{prefix}123 here",
     "things #{prefix}123 here",
+    "punctuation1: #{prefix}123: here",
+    "punctuation2. #{prefix}123. here",
+    "punctuation3, #{prefix}123, here",
+    "punctuation4? #{prefix}123? here",
     ].each do |text|
       it "should find gerrit number 123 when listening to '#{text}'." do
         msg = TestableMessage.new
