@@ -70,6 +70,14 @@ describe SRLinksPlugin, "#listen" do
     end
   end
 
+  it "should find both trac and gerrit numbers on the same line (#123 g:456)." do
+    msg = TestableMessage.new
+    msg.message = '#123 g:456'
+    plugin = SRLinksPlugin.new
+    plugin.listen(msg)
+    msg.get_replies.should eq("http://trac.srobo.org/ticket/123\nhttp://gerrit.srobo.org/456\n")
+  end
+
   [
   "trac 123",
   "trac #123",
