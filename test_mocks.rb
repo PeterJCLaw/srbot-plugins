@@ -32,3 +32,11 @@ class TestableMessage < PrivMessage
 		@replies += thing + "\n"
 	end
 end
+
+require 'open-uri'
+
+def open(url)
+	if url.include? "ThisPageMustNotExist" or url.include? "/ticket/1000000000000"
+		raise OpenURI::HTTPError.new(url, nil)
+	end
+end
