@@ -166,6 +166,7 @@ describe SRLinksPlugin, "#listen" do
 
   [
   "repo-name.git",
+  "nope git:// things",
   "things not repo-name.git here",
   ].each do |text|
     it "should not find a git repo when listening to '#{text}'." do

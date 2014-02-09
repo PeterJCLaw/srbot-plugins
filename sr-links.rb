@@ -14,7 +14,7 @@ class SRLinksPlugin < Plugin
   NumRegex = "(\\d+)"
   # A bit more than ordinary words..
   WordsRegex = "([\\w/\\-]+)"
-  RepoRegex = WordsRegex + "(.git)?"
+  RepoRegex = "(([\\w\\-]+/?)+)(.git)?"
 
   def initialize
     super
