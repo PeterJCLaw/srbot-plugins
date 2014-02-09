@@ -39,9 +39,15 @@ class SRLinksPlugin < Plugin
     #print partialRegex, "\n"
     fullRegex = /(^|\s)#{partialRegex}($|[\s,:;\.\?])/
     #print fullRegex, "\n"
-    if match = fullRegex.match(m.message)
-      #print match
+    any_valid = false
+    start = 0
+    while match = fullRegex.match(m.message, start)
+      # start again at the end of the part of interest
+      start = match.end(2)
+      #print "start:", start, "\n"
+      #print "match:", match, "\n"
       match_id = match[2].to_s
+      #print "match_id:", match_id, "\n"
       valid = false
       # Assume that unverified urls are valid
       if verifier == nil or verifier[match_id]
@@ -49,9 +55,10 @@ class SRLinksPlugin < Plugin
       end
       if valid
         m.reply baseURL % match_id
-        return true
+        any_valid = true
       end
     end
+    return any_valid
   end
 
   # create a link to any ticket numbers present
