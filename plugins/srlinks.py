@@ -1,4 +1,5 @@
 
+import re
 import urllib
 
 TRAC_URL = "http://trac.srobo.org/"
@@ -10,34 +11,40 @@ NUM_PATTERN = r"(\d+)\b"
 WORDS_PATTERN = r"([\w/\-]+)"
 REPO_PATTERN = r"(([\w\-]+/?)+)(.git)?"
 
-def wrap(d):
-    out = {}
-    for pattern, val in d.items():
-        out['.*' + pattern + '.*'] = val
-    return out
+def to_search(pattern):
+    return '.*' + pattern + '.*'
 
 def ticket_exists(num):
     # TODO
     return True
 
-patterns = wrap({
+patterns = {
                 "#" + NUM_PATTERN: (TRAC_URL + "ticket/{0}", ticket_exists),
             r"\bg:" + NUM_PATTERN: GERRIT_URL,
        r"\bgerrit:" + NUM_PATTERN: GERRIT_URL,
          r"\bgit:" + REPO_PATTERN: REPO_URL,
         r"\bcgit:" + REPO_PATTERN: REPO_URL,
-})
+}
 
 class SRLinks(object):
     def __init__(self, patterns):
         self.__name__ = self.__class__.__name__
-        self._patterns = patterns
-        self.rule = list(patterns.keys())
+        keys = patterns.keys()
+        # Build the list of rules for Willie, converting the search
+        # patterns into patterns which will match a whole line
+        self.rule = list(map(to_search, keys))
+        # Compile the search patterns so that they can later be used
+        # to search the line again to pick up duplicates
+        compiled = map(re.compile, keys)
+        compiled_patterns = zip(compiled, patterns.values())
+        # Store a mapping of rules to pairs of compiled search patterns
+        # and reponses
+        self._map = dict(zip(self.rule, compiled_patterns))
 
     def __call__(self, bot, trigger):
         pattern = trigger.match.re.pattern
         try:
-            response = self._patterns[pattern]
+            chunk_re, response = self._map[pattern]
         except KeyError:
             bot.debug("Unexpected pattern {0}.".format(repr(pattern)))
             return
@@ -47,10 +54,13 @@ class SRLinks(object):
         else:
             check = None
 
-        match = trigger.group(1)
-        if not check or check(match):
-            quoted = urllib.quote(match)
-            formatted = response.format(quoted)
-            bot.say(formatted)
+        matches = chunk_re.findall(trigger.match.string)
+        for match in matches:
+            if isinstance(match, tuple):
+                match = match[0]
+            if not check or check(match):
+                quoted = urllib.quote(match)
+                formatted = response.format(quoted)
+                bot.say(formatted)
 
 srlinks = SRLinks(patterns)

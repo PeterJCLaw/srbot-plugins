@@ -4,7 +4,7 @@ import re
 from tests_helpers import path_fudge, FakeBot, FakeTrigger
 path_fudge()
 
-from srlinks import patterns, SRLinks
+from srlinks import patterns, SRLinks, to_search
 
 def test_no_checks():
     def remove_check(val):
@@ -21,7 +21,8 @@ def test_no_checks():
     def check_inner(text, expected):
         bot = FakeBot()
         for pattern in keys:
-            match = re.match(pattern, text)
+            wrapped = to_search(pattern)
+            match = re.match(wrapped, text)
             if match:
                 srl(bot, FakeTrigger(match))
 
@@ -49,6 +50,9 @@ def test_no_checks():
                  "#here",
                 ]:
         yield check([]), text
+
+    yield check(['http://trac.srobo.org/ticket/123', \
+                 'http://trac.srobo.org/ticket/456']), "#123 #456"
 
     ## Gerrit related things ##
 

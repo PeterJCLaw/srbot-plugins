@@ -4,13 +4,13 @@ import re
 from tests_helpers import path_fudge, FakeBot, FakeTrigger
 path_fudge()
 
-from srlinks import SRLinks
+from srlinks import SRLinks, to_search
 
 def test_rules():
     rules = {'a': ('{0}',)}
     srl = SRLinks(rules)
 
-    expected = ['a']
+    expected = ['.*a.*']
     actual = srl.rule
     assert actual == expected, "Wrong rules returned"
 
@@ -30,7 +30,7 @@ def helper(pattern, val, text, expected):
     rules = {pattern: val}
     srl = SRLinks(rules)
 
-    match = re.match(pattern, text)
+    match = re.match(to_search(pattern), text)
     trigger = FakeTrigger(match)
     bot = FakeBot()
 
@@ -66,3 +66,7 @@ def test_match_check_fail():
     helper('a(.*)', val, 'abc', [])
 
     assert args == ['bc'], "Wrong args passed to check function"
+
+def test_multi_match_same_line():
+    expected = ['bc', 'def']
+    helper(r'a(\w+)\b', '{0}', 'abc, adef', expected)
