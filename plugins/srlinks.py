@@ -5,14 +5,6 @@ trac_url = 'http://trac.srobo.org'
 wiki_url = trac_url + '/wiki/{0}'
 ticket_url = trac_url + '/ticket/{0}'
 
-class FooBar(object):
-    def __init__(self):
-        self.__name__ = self.__class__.__name__
-        self.rule = ['foo']
-
-    def __call__(self, bot, trigger):
-        bot.say("bar")
-
 def ticket_exists(num):
     # TODO
     return True
@@ -47,5 +39,4 @@ class SRLinks(object):
             formatted = response.format(quoted)
             bot.say(formatted)
 
-#foo = FooBar()
 srlinks = SRLinks(patterns)
