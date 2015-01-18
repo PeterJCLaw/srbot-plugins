@@ -39,7 +39,7 @@ class SRLinks(object):
         try:
             response = self._patterns[pattern]
         except KeyError:
-            bot.debug("Unexpected pattern '{0}'.".format(repr(pattern)))
+            bot.debug("Unexpected pattern {0}.".format(repr(pattern)))
             return
 
         if isinstance(response, tuple):
