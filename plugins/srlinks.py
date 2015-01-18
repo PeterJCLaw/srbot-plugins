@@ -1,17 +1,32 @@
 
 import urllib
 
-trac_url = 'http://trac.srobo.org'
-wiki_url = trac_url + '/wiki/{0}'
-ticket_url = trac_url + '/ticket/{0}'
+TRAC_URL = "http://trac.srobo.org/"
+GERRIT_URL = "http://gerrit.srobo.org/{0}"
+REPO_URL = "http://srobo.org/cgit/{0}.git"
+
+NUM_PATTERN = r"(\d+)\b"
+# A bit more than ordinary words..
+WORDS_PATTERN = r"([\w/\-]+)"
+REPO_PATTERN = r"(([\w\-]+/?)+)(.git)?"
+
+def wrap(d):
+    out = {}
+    for pattern, val in d.items():
+        out['.*' + pattern + '.*'] = val
+    return out
 
 def ticket_exists(num):
     # TODO
     return True
 
-patterns = {
-    r'.*#(\d+).*': (ticket_url, ticket_exists)
-}
+patterns = wrap({
+                "#" + NUM_PATTERN: (TRAC_URL + "ticket/{0}", ticket_exists),
+            r"\bg:" + NUM_PATTERN: GERRIT_URL,
+       r"\bgerrit:" + NUM_PATTERN: GERRIT_URL,
+         r"\bgit:" + REPO_PATTERN: REPO_URL,
+        r"\bcgit:" + REPO_PATTERN: REPO_URL,
+})
 
 class SRLinks(object):
     def __init__(self, patterns):
