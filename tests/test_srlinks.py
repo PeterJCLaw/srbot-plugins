@@ -1,28 +1,10 @@
 
 import re
 
-import tests_helpers
-tests_helpers.path_fudge()
+from tests_helpers import path_fudge, FakeBot, FakeTrigger
+path_fudge()
 
 from srlinks import SRLinks
-
-class FakeTrigger(object):
-    def __init__(self, match):
-        self.match = match
-
-    @property
-    def group(self):
-        return self.match.group
-
-class FakeBot(object):
-    def __init__(self):
-        self.messages = []
-
-    def debug(self, dbg_msg):
-        pass
-
-    def say(self, message):
-        self.messages.append(message)
 
 def test_rules():
     rules = {'a': ('{0}',)}
