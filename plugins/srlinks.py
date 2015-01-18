@@ -31,10 +31,15 @@ class SRLinks(object):
     def __call__(self, bot, trigger):
         pattern = trigger.match.re.pattern
         try:
-            response, check = self._patterns[pattern]
+            response = self._patterns[pattern]
         except KeyError:
             bot.debug("Unexpected pattern '{0}'.".format(repr(pattern)))
             return
+
+        if isinstance(response, tuple):
+            response, check = response
+        else:
+            check = None
 
         match = trigger.group(1)
         if not check or check(match):
