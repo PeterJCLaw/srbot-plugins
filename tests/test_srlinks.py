@@ -42,6 +42,10 @@ def helper(pattern, val, text, expected):
 def test_match_no_check():
     helper('a(.*)', '{0}', 'abc', ['bc'])
 
+def test_match_groups():
+    helper('a(\d+)', '{0}', 'a1c', ['1'])
+    helper('a((\d+)(\w+))', '{0}', 'a1c', ['1c'])
+
 def test_match_check_pass():
     args = []
     def check(x):
