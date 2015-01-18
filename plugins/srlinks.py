@@ -33,7 +33,6 @@ class SRLinks(object):
         self.__name__ = self.__class__.__name__
         self._patterns = patterns
         self.rule = list(patterns.keys())
-        print(self.rule)
 
     def __call__(self, bot, trigger):
         pattern = trigger.match.re.pattern
