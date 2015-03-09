@@ -20,8 +20,5 @@ class FakeBot(object):
     def __init__(self):
         self.messages = []
 
-    def debug(self, dbg_msg):
-        print(dbg_msg)
-
     def say(self, message):
         self.messages.append(message)

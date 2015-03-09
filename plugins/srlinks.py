@@ -1,4 +1,6 @@
 
+from __future__ import print_function
+
 import re
 import urllib
 
@@ -46,7 +48,8 @@ class SRLinks(object):
         try:
             chunk_re, response = self._map[pattern]
         except KeyError:
-            bot.debug("Unexpected pattern {0}.".format(repr(pattern)))
+            msg = "SRLinks: Unexpected pattern {0}.".format(repr(pattern))
+            print(msg, file=sys.stderr)
             return
 
         if isinstance(response, tuple):
